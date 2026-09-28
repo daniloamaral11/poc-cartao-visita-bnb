@@ -1,0 +1,22 @@
+{
+	"fieldSets": [
+		{
+			"fields": [
+				{
+					"name": "objectEndpoint",
+					"label": "Endpoint do Object",
+					"defaultValue": "/o/c/cartaos",
+					"type": "text",
+					"dataType": "string"
+				},
+				{
+					"name": "marca",
+					"label": "Texto da marca",
+					"defaultValue": "Banco do Nordeste",
+					"type": "text",
+					"dataType": "string"
+				}
+			]
+		}
+	]
+}

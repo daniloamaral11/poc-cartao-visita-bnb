@@ -1,0 +1,18 @@
+.bnb-redirect { display: none; }
+
+/* visivel apenas no editor de paginas */
+.has-edit-mode-menu .bnb-redirect {
+	background: #FFF8E1;
+	border: 1px dashed #E87722;
+	border-radius: 8px;
+	color: #8B1538;
+	display: block;
+	font-size: 13px;
+	padding: 10px 14px;
+}
+
+.has-edit-mode-menu .bnb-redirect code {
+	background: #fff;
+	border-radius: 4px;
+	padding: 1px 5px;
+}

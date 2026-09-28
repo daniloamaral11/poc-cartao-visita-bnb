@@ -1,0 +1,98 @@
+.bnb-wrap {
+	--vinho: #8B1538;
+	--vermelho: #B01C2E;
+	--amarelo: #FFD100;
+	--laranja: #E87722;
+
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+	gap: 20px;
+	padding: 24px;
+}
+
+.bnb-card {
+	background: #fff;
+	border: 1px solid #eee;
+	border-radius: 14px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, .18);
+	overflow: hidden;
+	width: min(520px, 100%);
+}
+
+.bnb-card__bar {
+	background: linear-gradient(90deg, var(--vinho), var(--vermelho), var(--laranja), var(--amarelo));
+	height: 10px;
+}
+
+.bnb-card__body { padding: 28px 32px; }
+
+.bnb-card__brand {
+	color: var(--vinho);
+	display: inline-block;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: .14em;
+	margin-bottom: 14px;
+	text-transform: uppercase;
+}
+
+.bnb-card__nome {
+	color: #2B2B2B;
+	font-size: 28px;
+	font-weight: 800;
+	line-height: 1.2;
+	margin: 0;
+}
+
+.bnb-card__cargo {
+	color: var(--vermelho);
+	font-size: 15px;
+	font-weight: 600;
+	margin: 4px 0 18px;
+}
+
+.bnb-card__tel,
+.bnb-card__mail {
+	color: #555;
+	font-size: 14px;
+	margin: 2px 0;
+}
+
+.bnb-card__stripe {
+	background: var(--amarelo);
+	height: 6px;
+}
+
+.bnb-actions {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	justify-content: center;
+}
+
+.bnb-btn {
+	border: 0;
+	border-radius: 999px;
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: 600;
+	padding: 11px 22px;
+}
+
+.bnb-btn--primary { background: var(--vinho); color: #fff; }
+.bnb-btn--primary:hover { background: var(--vermelho); }
+
+.bnb-btn--ghost {
+	background: transparent;
+	border: 2px solid var(--vinho);
+	color: var(--vinho);
+}
+
+.bnb-toast { color: #1a7f37; font-size: 13px; font-weight: 600; }
+
+@media (max-width: 480px) {
+	.bnb-card__nome { font-size: 22px; }
+}

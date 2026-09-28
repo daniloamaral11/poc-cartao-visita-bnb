@@ -1,0 +1,865 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>POC Cartão de Visita — Guia de Replicação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap">
+<style>
+:root {
+	--ground: #ffffff;
+	--surface: #f7f8f9;
+	--surface-2: #f1f2f5;
+	--ink: #272833;
+	--ink-2: #6b6c7e;
+	--ink-3: #a7a9bc;
+	--line: #e7e7ed;
+	--line-strong: #cdced9;
+
+	--primary: #0b5fff;
+	--primary-d: #0048d9;
+	--primary-soft: #e7f0ff;
+
+	--success: #287d3c;
+	--success-soft: #edf9f0;
+	--warning: #b95000;
+	--warning-soft: #fff6e6;
+	--danger: #da1414;
+	--danger-soft: #ffeded;
+
+	--radius: 4px;
+	--maxw: 940px;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--ground: #16171d;
+		--surface: #1e2029;
+		--surface-2: #272833;
+		--ink: #f1f2f5;
+		--ink-2: #a7a9bc;
+		--ink-3: #7d7f92;
+		--line: #2e303b;
+		--line-strong: #3e4152;
+
+		--primary: #5b9cff;
+		--primary-d: #86b8ff;
+		--primary-soft: #182338;
+
+		--success: #4fc77d;
+		--success-soft: #15241a;
+		--warning: #f0a45c;
+		--warning-soft: #2a2015;
+		--danger: #ff6b6b;
+		--danger-soft: #2d1919;
+	}
+}
+
+* { box-sizing: border-box; }
+
+body {
+	background: var(--ground);
+	color: var(--ink);
+	font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+	font-size: 16px;
+	line-height: 1.6;
+	margin: 0;
+	padding-block: 0 80px;
+	padding-inline: 20px;
+	-webkit-font-smoothing: antialiased;
+}
+
+.wrap { margin: 0 auto; max-width: var(--maxw); }
+
+/* ---------- topo ---------- */
+
+.masthead { border-bottom: 1px solid var(--line); padding-block: 44px 30px; }
+
+.kicker {
+	color: var(--primary);
+	font-family: "Source Code Pro", ui-monospace, monospace;
+	font-size: .75rem;
+	font-weight: 600;
+	letter-spacing: .1em;
+	margin: 0 0 14px;
+	text-transform: uppercase;
+}
+
+h1 {
+	font-size: 2.6rem;
+	font-weight: 900;
+	letter-spacing: -.02em;
+	line-height: 1.08;
+	margin: 0;
+	text-wrap: balance;
+}
+
+.sub { color: var(--ink-2); font-size: 1.2rem; margin: 14px 0 0; max-width: 62ch; }
+
+.meta {
+	display: grid;
+	gap: 16px 30px;
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	margin-top: 28px;
+}
+
+.meta > div { display: flex; flex-direction: column; gap: 2px; }
+
+.meta dt {
+	color: var(--ink-3);
+	font-family: "Source Code Pro", monospace;
+	font-size: .6875rem;
+	letter-spacing: .08em;
+	text-transform: uppercase;
+}
+
+.meta dd { font-size: .875rem; font-weight: 600; margin: 0; }
+
+/* ---------- secoes ---------- */
+
+section { padding-block: 42px 0; }
+
+h2 {
+	border-bottom: 2px solid var(--primary);
+	display: inline-block;
+	font-size: 1.75rem;
+	font-weight: 700;
+	letter-spacing: -.015em;
+	margin: 0 0 22px;
+	padding-bottom: 6px;
+}
+
+h3 {
+	font-size: 1.15rem;
+	font-weight: 700;
+	margin: 30px 0 10px;
+}
+
+p { margin: 0 0 14px; max-width: 70ch; }
+
+a { color: var(--primary); }
+
+code {
+	background: var(--surface-2);
+	border-radius: 3px;
+	color: var(--ink);
+	font-family: "Source Code Pro", ui-monospace, monospace;
+	font-size: .875em;
+	padding: 1px 5px;
+	word-break: break-word;
+}
+
+pre {
+	background: var(--surface);
+	border: 1px solid var(--line);
+	border-left: 3px solid var(--primary);
+	border-radius: var(--radius);
+	font-family: "Source Code Pro", ui-monospace, monospace;
+	font-size: .8125rem;
+	line-height: 1.7;
+	margin: 0 0 18px;
+	overflow-x: auto;
+	padding: 14px 16px;
+}
+
+pre code { background: none; padding: 0; }
+pre .c { color: var(--ink-3); }
+
+ul, ol { margin: 0 0 16px; max-width: 70ch; padding-left: 22px; }
+li { margin-bottom: 6px; }
+
+/* ---------- passos ---------- */
+
+.step {
+	border-bottom: 1px solid var(--line);
+	display: grid;
+	gap: 4px 20px;
+	grid-template-columns: 40px 1fr;
+	padding-block: 26px;
+}
+
+.step:last-child { border-bottom: none; }
+
+.step-n {
+	background: var(--primary);
+	border-radius: 50%;
+	color: #fff;
+	font-family: "Source Code Pro", monospace;
+	font-size: .875rem;
+	font-weight: 600;
+	grid-row: span 2;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	width: 30px;
+}
+
+.step h3 { font-size: 1.3rem; margin: 0 0 10px; }
+.step-body > :last-child { margin-bottom: 0; }
+
+.path {
+	background: var(--primary-soft);
+	border-radius: var(--radius);
+	color: var(--primary);
+	display: inline-block;
+	font-family: "Source Code Pro", monospace;
+	font-size: .8125rem;
+	font-weight: 600;
+	margin-bottom: 12px;
+	padding: 5px 11px;
+}
+
+/* ---------- avisos ---------- */
+
+.alert {
+	border-radius: var(--radius);
+	border-left: 3px solid;
+	font-size: .9375rem;
+	margin: 0 0 18px;
+	padding: 13px 16px;
+}
+
+.alert p { margin: 0; max-width: none; }
+.alert p + p { margin-top: 8px; }
+.alert b { display: block; margin-bottom: 3px; }
+
+.alert--info { background: var(--primary-soft); border-color: var(--primary); }
+.alert--info b { color: var(--primary); }
+.alert--warn { background: var(--warning-soft); border-color: var(--warning); }
+.alert--warn b { color: var(--warning); }
+.alert--ok { background: var(--success-soft); border-color: var(--success); }
+.alert--ok b { color: var(--success); }
+.alert--danger { background: var(--danger-soft); border-color: var(--danger); }
+.alert--danger b { color: var(--danger); }
+
+/* ---------- tabelas ---------- */
+
+.scroller { margin-bottom: 18px; overflow-x: auto; }
+
+table { border-collapse: collapse; font-size: .875rem; width: 100%; }
+
+th {
+	background: var(--surface-2);
+	border-bottom: 1px solid var(--line-strong);
+	font-size: .75rem;
+	font-weight: 600;
+	letter-spacing: .04em;
+	padding: 9px 12px;
+	text-align: left;
+	text-transform: uppercase;
+	white-space: nowrap;
+}
+
+td { border-bottom: 1px solid var(--line); padding: 9px 12px; vertical-align: top; }
+tbody tr:last-child td { border-bottom: none; }
+
+.mono { font-family: "Source Code Pro", monospace; font-size: .9375em; }
+.nowrap { white-space: nowrap; }
+
+/* ---------- indice ---------- */
+
+.toc { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+
+.toc a {
+	background: var(--surface);
+	border: 1px solid var(--line-strong);
+	border-radius: var(--radius);
+	color: var(--ink-2);
+	font-size: .875rem;
+	font-weight: 600;
+	padding: 6px 13px;
+	text-decoration: none;
+}
+
+.toc a:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+footer {
+	border-top: 1px solid var(--line);
+	color: var(--ink-3);
+	font-size: .875rem;
+	margin-top: 50px;
+	padding-top: 20px;
+}
+
+footer p { max-width: none; }
+
+@media (max-width: 600px) {
+	h1 { font-size: 2rem; }
+	body { padding-inline: 16px; }
+	.step { grid-template-columns: 1fr; gap: 10px; }
+	.step-n { grid-row: auto; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+	<p class="kicker">Liferay DXP 2025.Q1 · Prova de conceito</p>
+	<h1>Cartão de Visita Digital</h1>
+	<p class="sub">
+		Guia de replicação. Ao final você terá um cadastro que grava em um Object, gera uma página
+		própria para cada pessoa, exporta o cartão em PNG e entrega um link compartilhável — tudo
+		com recursos nativos, sem módulo OSGi, sem client extension e sem biblioteca externa.
+	</p>
+
+	<dl class="meta">
+		<div><dt>Tempo estimado</dt><dd>40 a 60 minutos</dd></div>
+		<div><dt>Pré-requisito</dt><dd>DXP 2025.Q1+ ou 7.4 U92+</dd></div>
+		<div><dt>Perfil</dt><dd>Administrador do site</dd></div>
+		<div><dt>Código envolvido</dt><dd>1 fragmento (HTML/CSS/JS)</dd></div>
+	</dl>
+
+	<nav class="toc">
+		<a href="#pacote">Conteúdo do pacote</a>
+		<a href="#arquitetura">Arquitetura</a>
+		<a href="#passos">Passo a passo</a>
+		<a href="#verificar">Verificação</a>
+		<a href="#armadilhas">Armadilhas</a>
+		<a href="#referencia">Referência</a>
+	</nav>
+</header>
+
+<main>
+
+<section id="pacote">
+	<h2>Conteúdo do pacote</h2>
+
+	<pre>poc-cartao-bnb/
+├── GUIA.html                        <span class="c">este documento</span>
+├── README.md                        <span class="c">resumo e ordem de execução</span>
+└── fragments/
+    ├── bnb-fragments.zip            <span class="c">pronto para importar na UI</span>
+    └── bnb/                         <span class="c">fonte versionável do set</span>
+        ├── collection.json
+        ├── cartao-visita/           <span class="c">o cartão: render, PNG, copiar link</span>
+        │   ├── fragment.json
+        │   ├── configuration.json   <span class="c">marca e endpoint, no painel lateral</span>
+        │   ├── index.html
+        │   ├── index.css
+        │   └── index.js
+        └── redirect-pos-cadastro/   <span class="c">opcional, ver passo 7</span></pre>
+
+	<div class="alert alert--info">
+		<b>Tudo pela interface</b>
+		<p>
+			Nenhum passo exige linha de comando. Os únicos comandos no guia são chamadas
+			<code>curl</code> de verificação, no fim — e existem porque testar permissão de visitante
+			anônimo é mais confiável assim do que abrindo janela privada.
+		</p>
+	</div>
+</section>
+
+<section id="arquitetura">
+	<h2>Arquitetura</h2>
+
+	<p>
+		Seis peças nativas se encaixam. O que costuma confundir é que três delas têm nomes parecidos
+		e papéis distintos — vale ler esta tabela antes de começar a clicar.
+	</p>
+
+	<div class="scroller">
+		<table>
+			<thead>
+				<tr><th>Peça</th><th>Papel na POC</th><th>Onde fica</th></tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><strong>Object</strong></td>
+					<td>Modelo de dados. Ao publicar, gera tabela, tela de admin, permissões e API REST.</td>
+					<td class="mono nowrap">Menu → Objects</td>
+				</tr>
+				<tr>
+					<td><strong>Fragment</strong></td>
+					<td>Bloco de HTML/CSS/JS reutilizável. É onde mora todo o código da POC.</td>
+					<td class="mono nowrap">Design → Fragments</td>
+				</tr>
+				<tr>
+					<td><strong>Form Container</strong></td>
+					<td>Fragmento que vira formulário ao ser apontado para um Object. Gera os inputs sozinho.</td>
+					<td class="mono nowrap">no editor de página</td>
+				</tr>
+				<tr>
+					<td><strong>Display Page Template</strong></td>
+					<td>Molde que renderiza <em>um</em> registro. Dá URL própria a cada cartão.</td>
+					<td class="mono nowrap">Design → Page Templates</td>
+				</tr>
+				<tr>
+					<td><strong>Collection</strong></td>
+					<td>Consulta salva. Dinâmica: cadastrou, apareceu. Não desenha nada.</td>
+					<td class="mono nowrap">Content → Collections</td>
+				</tr>
+				<tr>
+					<td><strong>Collection Display</strong></td>
+					<td>Fragmento que desenha uma Collection. Não busca nada — anda sempre em par com ela.</td>
+					<td class="mono nowrap">no editor de página</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<h3>Fluxo final</h3>
+
+	<pre>/cadastro-de-cartao        Form Container grava no Object
+        ↓                  Success Action: Go to Entry Display Page
+/e/&lt;template&gt;/&lt;id&gt;         Display Page Template renderiza o cartão
+        ↓                  fragmento Cartao Visita
+   PNG + link              canvas.toDataURL() e navigator.clipboard
+
+/galeria                   Collection Display lista tudo e linka cada item</pre>
+</section>
+
+<section id="passos">
+	<h2>Passo a passo</h2>
+
+	<p>
+		A ordem importa: os passos 4 e 5 destravam opções que os passos 6 e 8 precisam encontrar na
+		interface. Fora de ordem, você vai procurar menus que ainda não existem.
+	</p>
+
+	<div class="step">
+		<div class="step-n">1</div>
+		<div class="step-body">
+			<h3>Criar a picklist Unidade</h3>
+			<span class="path">Menu → Objects → Picklists → New</span>
+			<p>Nome <code>Unidade</code>. Adicione três entradas:</p>
+			<pre>Gerencia    RH    TI</pre>
+			<p>
+				Picklists são domínios fechados reutilizáveis entre Objects. O valor gravado é o par
+				chave/rótulo — na API aparece como <code>{"key": "TI"}</code>, não como texto puro.
+			</p>
+		</div>
+	</div>
+
+	<div class="step">
+		<div class="step-n">2</div>
+		<div class="step-body">
+			<h3>Criar e publicar o Object</h3>
+			<span class="path">Menu → Objects → New Object</span>
+			<p>Nome <code>Cartao</code>, rótulo <em>Cartão de Visita</em>, <strong>Scope: Site</strong>. Campos:</p>
+
+			<div class="scroller">
+				<table>
+					<thead><tr><th>Campo</th><th>Tipo</th><th>Obrigatório</th></tr></thead>
+					<tbody>
+						<tr><td class="mono">nome</td><td>Text</td><td>sim</td></tr>
+						<tr><td class="mono">cargo</td><td>Text</td><td>sim</td></tr>
+						<tr><td class="mono">telefone</td><td>Text</td><td>sim</td></tr>
+						<tr><td class="mono">email</td><td>Text</td><td>não</td></tr>
+						<tr><td class="mono">unidade</td><td>Picklist → Unidade</td><td>sim</td></tr>
+					</tbody>
+				</table>
+			</div>
+
+			<p>
+				Clique em <strong>Publish</strong>. Anote o caminho REST que aparece na aba
+				<strong>API</strong> — deve ser <code>/o/c/cartaos</code>, mas confirme: o plural é
+				derivado do rótulo e pode sair diferente no seu ambiente.
+			</p>
+		</div>
+	</div>
+
+	<div class="step">
+		<div class="step-n">3</div>
+		<div class="step-body">
+			<h3>Liberar o papel Guest</h3>
+			<span class="path">Control Panel → Roles → Guest → Define Permissions</span>
+			<p>
+				Busque por <code>Cartao</code>. Marque <strong>View</strong> no grupo de permissões
+				das <strong>entradas</strong> e salve.
+			</p>
+
+			<div class="alert alert--danger">
+				<b>Não confunda com Objects → Cartao → Permissions</b>
+				<p>
+					Aquela tela controla a <em>definição</em> do Object — quem enxerga o Object em si.
+					Marcar View lá não torna os registros públicos: cadastros novos continuam devolvendo
+					<strong>404</strong> para visitante anônimo.
+				</p>
+				<p>
+					A permissão que os registros herdam ao nascer é a do papel, configurada aqui.
+					É a armadilha mais cara desta POC.
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="step">
+		<div class="step-n">4</div>
+		<div class="step-body">
+			<h3>Importar o fragment set</h3>
+			<span class="path">Design → Fragments → ⋮ → Import</span>
+			<p>
+				Selecione <code>fragments/bnb-fragments.zip</code>. Deve aparecer o set <strong>BNB</strong>
+				com dois fragmentos.
+			</p>
+			<p>
+				Abra <strong>Cartao Visita</strong> e confira o painel de configuração: há campos para o
+				texto da marca e para o endpoint do Object. Se o passo 2 gerou um caminho REST diferente
+				de <code>/o/c/cartaos</code>, ajuste aqui — ou na instância do fragmento, depois de
+				colocá-lo numa página.
+			</p>
+			<p>
+				Não existe API REST para importar fragmentos nesta versão; este passo é necessariamente
+				manual.
+			</p>
+		</div>
+	</div>
+
+	<div class="step">
+		<div class="step-n">5</div>
+		<div class="step-body">
+			<h3>Criar o Display Page Template e marcá-lo como padrão</h3>
+			<span class="path">Design → Page Templates → Display Page Templates → +</span>
+			<p>
+				Content Type <strong>Cartao</strong>, nome <em>Cartão de Visita BNB</em>. Arraste o
+				fragmento <strong>Cartao Visita</strong> para dentro.
+			</p>
+			<p>
+				Clique no elemento do nome. No painel direito, o ícone de <strong>corrente</strong> abre
+				o mapeamento: escolha o item atual e o campo <code>nome</code>. Repita para
+				<code>cargo</code>, <code>telefone</code> e <code>email</code>.
+			</p>
+			<p><strong>Publish</strong> e depois, na listagem, menu <strong>⋮ → Mark as Default</strong>.</p>
+
+			<div class="alert alert--warn">
+				<b>Mark as Default é o interruptor mestre</b>
+				<p>
+					Só depois dele passam a existir a opção <strong>Display Page</strong> no mapeamento de
+					link do Collection Display (passo 8) e o Success Action
+					<strong>Go to Entry Display Page</strong> (passo 6). Se alguma não aparece na interface,
+					volte aqui.
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="step">
+		<div class="step-n">6</div>
+		<div class="step-body">
+			<h3>Montar a página de cadastro</h3>
+			<span class="path">Site Builder → Pages → + → Blank</span>
+			<p>
+				Nome <em>Cadastro de Cartão</em>. O card <strong>Blank</strong>, em <em>Basic Templates</em>,
+				é a Content Page — o diálogo não usa esse termo em lugar nenhum.
+			</p>
+			<p>
+				No editor, arraste o fragmento <strong>Form Container</strong> e, no painel direito,
+				aponte o Content Type para o Object <strong>Cartao</strong>. Os inputs são gerados
+				automaticamente, já mapeados: você não precisa arrastar campo por campo.
+			</p>
+			<p>Ajustes que restam:</p>
+			<ul>
+				<li>remova os campos de sistema que vierem junto (não apaga o campo do Object)</li>
+				<li>ordene: nome, cargo, telefone, email, unidade</li>
+				<li><strong>Success Action</strong> → <code>Go to Entry Display Page</code></li>
+			</ul>
+			<p><strong>Publish</strong>.</p>
+		</div>
+	</div>
+
+	<div class="step">
+		<div class="step-n">7</div>
+		<div class="step-body">
+			<h3>Ignorar o fragmento Redirect Pos Cadastro</h3>
+			<p>
+				Ele vem no ZIP e resolve, via JavaScript, o mesmo problema que o Success Action do passo 6
+				resolve nativamente: abrir o cartão recém-criado. Se o seu Object tiver display page,
+				<strong>não coloque esse fragmento na página</strong> — os dois redirecionamentos competem.
+			</p>
+			<p>
+				Ele só é útil num cenário sem Display Page Template, onde você precisa mandar o usuário
+				para uma página comum com <code>?id=</code> na URL.
+			</p>
+		</div>
+	</div>
+
+	<div class="step">
+		<div class="step-n">8</div>
+		<div class="step-body">
+			<h3>Criar a Collection e a galeria</h3>
+			<span class="path">Content → Collections → New → Dynamic</span>
+			<p>
+				Nome <em>Cartões de Visita</em>, Content Type <strong>Cartao</strong>, ordenado por
+				<code>nome</code> ascendente, sem filtro.
+			</p>
+			<p>
+				Crie uma página <em>Galeria</em> (Blank, URL <code>/galeria</code>), arraste o fragmento
+				<strong>Collection Display</strong> e selecione a coleção.
+			</p>
+			<p>
+				Monte o layout <em>dentro do primeiro item</em> — ele replica para os demais. Para o link,
+				selecione o elemento, aba <strong>Link</strong>, escolha <code>Mapped URL</code> e, no
+				campo <strong>Field</strong>, a opção de <strong>display page</strong>.
+			</p>
+
+			<div class="alert alert--warn">
+				<b>Não mapeie o link para um campo de texto</b>
+				<p>
+					O editor aceita sem reclamar e produz <code>href="Mariana Figueiredo"</code> em todos
+					os itens. Se a opção de display page não estiver na lista, o passo 5 não foi concluído.
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="step">
+		<div class="step-n">9</div>
+		<div class="step-body">
+			<h3>Criar a rota alternativa (opcional)</h3>
+			<span class="path">Site Builder → Pages → + → Blank</span>
+			<p>
+				Uma página <em>Cartao</em> com URL <code>/cartao</code> e o fragmento
+				<strong>Cartao Visita</strong> solto, sem mapear nada.
+			</p>
+			<p>
+				O mesmo fragmento funciona nos dois contextos: dentro do Display Page Template ele lê os
+				valores mapeados do DOM; numa página comum ele lê <code>?id=</code> da URL e busca a
+				entrada pela API. Serve como plano B se o Display Page Template der problema numa
+				apresentação.
+			</p>
+		</div>
+	</div>
+
+	<div class="step">
+		<div class="step-n">10</div>
+		<div class="step-body">
+			<h3>Popular com exemplos</h3>
+			<span class="path">/cadastro-de-cartao</span>
+			<p>
+				Use o próprio formulário que você acabou de publicar — é também o primeiro teste real
+				do fluxo completo.
+			</p>
+			<p>
+				Cadastre quatro ou cinco pessoas, com <strong>cargos de comprimentos bem diferentes</strong>.
+				Uma galeria com um único registro não demonstra nada, e um cargo longo como
+				"Especialista em Microcrédito" revela na hora se o layout do cartão e o desenho do PNG
+				aguentam texto que não cabe.
+			</p>
+		</div>
+	</div>
+</section>
+
+<section id="verificar">
+	<h2>Verificação</h2>
+
+	<p>
+		O único teste que prova as permissões usa <strong>registro novo</strong> e
+		<strong>nenhuma sessão</strong>. Registros criados antes podem ter recebido permissão avulsa
+		e passam no teste sem provar nada.
+	</p>
+
+	<h3>Roteiro em janela anônima</h3>
+
+	<ol>
+		<li>Na janela normal, logado, cadastre alguém em <code>/cadastro-de-cartao</code></li>
+		<li>Confirme que você caiu direto na página do cartão recém-criado</li>
+		<li><strong>Baixar PNG</strong> deve gerar o arquivo com os dados corretos</li>
+		<li><strong>Copiar link</strong> deve mostrar a confirmação</li>
+		<li>Cole esse link numa <strong>janela anônima</strong> — o cartão precisa abrir sem login</li>
+		<li>Ainda anônimo, abra <code>/galeria</code> e clique em outro nome</li>
+	</ol>
+
+	<p>
+		O passo 5 é o que reprova com mais frequência, e o culpado quase sempre é a permissão do
+		passo 3 marcada no lugar errado.
+	</p>
+
+	<h3>Mesmo teste por linha de comando</h3>
+
+	<p>
+		Mais rápido de repetir, e a resposta é inequívoca. Pegue o id do cartão que você acabou de
+		criar e consulte <strong>sem credenciais</strong>:
+	</p>
+
+	<pre>curl -s -o /dev/null -w "%{http_code}\n" http://localhost:8080/o/c/cartaos/&lt;id&gt;
+
+<span class="c">200 → permissão correta, o cartão é público</span>
+<span class="c">404 → falta a permissão de ENTRADA para Guest (passo 3)</span></pre>
+
+	<div class="alert alert--info">
+		<b>404 e não 403</b>
+		<p>
+			Quando falta permissão de entrada, o Liferay responde <strong>404</strong>. Parece registro
+			inexistente, e é fácil perder tempo procurando erro de dado onde há bloqueio de acesso.
+		</p>
+	</div>
+
+	<h3>Quando algo falha</h3>
+
+	<div class="scroller">
+		<table>
+			<thead><tr><th>Sintoma</th><th>Causa mais provável</th></tr></thead>
+			<tbody>
+				<tr>
+					<td>Cartão mostra "Nome da Pessoa"</td>
+					<td>Sem <code>?id=</code> e sem mapeamento. No Console procure o aviso <code>[cartao-visita]</code> com o status HTTP.</td>
+				</tr>
+				<tr>
+					<td>Botão <em>Baixar PNG</em> sempre desabilitado</td>
+					<td>Os dados não carregaram — é o comportamento correto, para não exportar placeholder.</td>
+				</tr>
+				<tr>
+					<td><code>404</code> anônimo em registro novo</td>
+					<td>Passo 3 incompleto: a permissão foi marcada na tela do Object, não no papel.</td>
+				</tr>
+				<tr>
+					<td><code>409</code> ao listar pela API</td>
+					<td>Object com escopo Site exige <code>/scopes/&lt;groupId&gt;</code> no caminho.</td>
+				</tr>
+				<tr>
+					<td>Formulário não redireciona</td>
+					<td>Success Action não está em <code>Go to Entry Display Page</code>, ou o template não foi marcado como padrão.</td>
+				</tr>
+				<tr>
+					<td>Links da galeria todos iguais ou quebrados</td>
+					<td>Link mapeado para um campo de texto em vez da display page.</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>
+
+<section id="armadilhas">
+	<h2>Armadilhas</h2>
+
+	<div class="alert alert--warn">
+		<b>Permissão do Object não é permissão das entradas</b>
+		<p>
+			São recursos distintos. O sintoma de faltar a permissão de entrada é <code>404</code>, não
+			<code>403</code> — parece registro inexistente, e você perde tempo procurando erro de dado.
+		</p>
+	</div>
+
+	<div class="alert alert--warn">
+		<b>Content Page se chama "Blank"</b>
+		<p>
+			O diálogo de nova página não usa o termo em lugar nenhum. Tudo que está em <em>Other</em>
+			são outros tipos. Sinal de acerto: a página abre no editor com o painel de Fragments.
+		</p>
+	</div>
+
+	<div class="alert alert--warn">
+		<b>Sem data-lfr-editable não há mapeamento</b>
+		<p>
+			O ícone de corrente só aparece em elementos com <code>data-lfr-editable-id</code> e
+			<code>data-lfr-editable-type</code>. Um fragmento sem esses atributos parece não suportar
+			mapeamento. O <code>Cartao Visita</code> já vem com eles.
+		</p>
+	</div>
+
+	<div class="alert alert--warn">
+		<b>Fragmentos e páginas não têm REST</b>
+		<p>
+			Não há endpoint para importar fragment collections — a API expõe apenas <em>fragment
+			compositions</em>, que são outra coisa. E <code>POST /site-pages</code> responde
+			<code>UnsupportedOperationException</code>. Importar o ZIP, criar páginas e arrastar
+			fragmentos são sempre manuais.
+		</p>
+	</div>
+
+	<div class="alert alert--warn">
+		<b>O plural do endpoint não é garantido</b>
+		<p>
+			<code>/o/c/cartaos</code> foi o gerado no ambiente de origem, mas o caminho deriva do rótulo
+			do Object. Confirme na aba <strong>API</strong> antes de fixá-lo no campo
+			<code>objectEndpoint</code> da configuração do fragmento.
+		</p>
+	</div>
+</section>
+
+<section id="referencia">
+	<h2>Referência</h2>
+
+	<h3>Endpoints do Object</h3>
+
+	<p>
+		Não são necessários para montar a POC — o Liferay os gera sozinho e a interface cobre
+		todo o fluxo. Ficam aqui para depuração e para quem for integrar outro sistema.
+	</p>
+
+	<pre><span class="c"># uma entrada — dispensa o escopo</span>
+GET    /o/c/cartaos/{id}
+
+<span class="c"># listagem — exige o escopo em Objects site-scoped</span>
+GET    /o/c/cartaos/scopes/{groupId}?pageSize=50&amp;sort=nome:asc
+
+<span class="c"># criação</span>
+POST   /o/c/cartaos/scopes/{groupId}
+       {"nome":"...","cargo":"...","telefone":"...","unidade":{"key":"TI"}}
+
+<span class="c"># atualização parcial e remoção</span>
+PATCH  /o/c/cartaos/{id}
+DELETE /o/c/cartaos/{id}
+
+<span class="c"># permissão de UMA entrada (a de modelo não tem REST)</span>
+PUT    /o/c/cartaos/{id}/permissions
+       [{"actionIds":["VIEW"],"roleName":"Guest"}]
+
+<span class="c"># administração</span>
+GET    /o/object-admin/v1.0/object-definitions
+GET    /o/headless-admin-user/v1.0/my-user-account   <span class="c">mostra os sites</span></pre>
+
+	<h3>O que o fragmento Cartao Visita faz</h3>
+
+	<ul>
+		<li>
+			<strong>Renderiza</strong> o cartão com a faixa em gradiente. Funciona com campos mapeados
+			(display page) ou buscando por <code>?id=</code> (página comum).
+		</li>
+		<li>
+			<strong>Exporta PNG</strong> desenhando em <code>canvas</code> 2D nativo — sem biblioteca
+			externa. Não é captura de tela: se você mudar o CSS do cartão, ajuste também a função de
+			desenho em <code>index.js</code>.
+		</li>
+		<li>
+			<strong>Copia o link</strong> com <code>navigator.clipboard</code>, com fallback para
+			<code>execCommand</code> fora de contexto seguro (HTTP sem TLS).
+		</li>
+		<li>
+			<strong>Desabilita a exportação</strong> enquanto os dados não carregam, para nunca gerar
+			um PNG com texto de placeholder.
+		</li>
+	</ul>
+
+	<h3>Configuração do fragmento</h3>
+
+	<div class="scroller">
+		<table>
+			<thead><tr><th>Campo</th><th>Padrão</th><th>Para que serve</th></tr></thead>
+			<tbody>
+				<tr><td class="mono">marca</td><td class="mono">Banco do Nordeste</td><td>texto do topo do cartão e do PNG</td></tr>
+				<tr><td class="mono">objectEndpoint</td><td class="mono">/o/c/cartaos</td><td>caminho REST usado na rota <code>?id=</code></td></tr>
+			</tbody>
+		</table>
+	</div>
+
+	<h3>Adaptar para outro cliente</h3>
+
+	<p>
+		As quatro cores da marca estão no topo de <code>fragments/bnb/cartao-visita/index.css</code>,
+		como variáveis CSS em <code>.bnb-wrap</code>. Trocar ali muda o cartão na tela. O PNG tem os
+		valores repetidos em <code>index.js</code>, na função de desenho — é o único ponto de
+		duplicação consciente do projeto, porque o canvas não lê CSS.
+	</p>
+
+	<p>
+		Para aplicar a identidade ao site inteiro (header, botões, links), o caminho é um
+		<strong>Style Book</strong> em <em>Design → Style Books</em>, não CSS espalhado por página.
+	</p>
+</section>
+
+</main>
+
+<footer>
+	<p>
+		Construído e verificado em Liferay DXP 2025.Q1.17 LTS. Os passos valem para 7.4 U92+ e
+		versões Quarterly posteriores; nomes de menu podem variar levemente entre releases.
+	</p>
+</footer>
+
+</div>
+</body>
+</html>

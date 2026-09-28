@@ -1,0 +1,29 @@
+{
+	"fieldSets": [
+		{
+			"fields": [
+				{
+					"name": "paginaCartao",
+					"label": "Pagina do cartao",
+					"defaultValue": "/cartao",
+					"type": "text",
+					"dataType": "string"
+				},
+				{
+					"name": "objectEndpoint",
+					"label": "Endpoint do Object",
+					"defaultValue": "/o/c/cartaos",
+					"type": "text",
+					"dataType": "string"
+				},
+				{
+					"name": "scopeId",
+					"label": "Site ID (scope do Object)",
+					"defaultValue": "20118",
+					"type": "text",
+					"dataType": "string"
+				}
+			]
+		}
+	]
+}
